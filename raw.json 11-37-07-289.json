@@ -1,0 +1,1489 @@
+{
+  "name": "FunnelBud Marketing AB",
+  "orgnr": "5590118294",
+  "purpose": "Konsulttjänster inom sälj- och marknadsföring.",
+  "companyType": null,
+  "contact": {
+    "phone": null,
+    "email": null,
+    "website": null,
+    "contactPersons": []
+  },
+  "location": {
+    "visitorAddress": {
+      "addressLine": null,
+      "boxAddressLine": null,
+      "zipCode": null,
+      "postPlace": "Stockholm"
+    },
+    "postalAddress": {
+      "addressLine": "Kivra: 559011-8294",
+      "boxAddressLine": null,
+      "zipCode": "106 31",
+      "postPlace": "Stockholm"
+    },
+    "municipality": "Stockholm",
+    "county": "Stockholm",
+    "region": "Hela Sverige",
+    "coordinates": null
+  },
+  "industry": {
+    "mainSni": "10003170",
+    "mainSniName": "Företagsutveckling",
+    "naceCodes": [
+      "70220 Konsultverksamhet avseende företags organisation",
+      "85594 Personalutbildning"
+    ],
+    "industryHierarchy": null
+  },
+  "registration": {
+    "legalForm": null,
+    "companyTypeCode": null,
+    "foundedDate": null,
+    "shareCapital_SEK": 50,
+    "status": "ACTIVE",
+    "statusDate": null,
+    "orgnr": "5590118294",
+    "vatNumber": null,
+    "registeredForVAT": true,
+    "registeredForPrepaymentTax": null,
+    "registeredForPayrollTax": true,
+    "registeredForFskatt": null,
+    "registeredAuthorities": null
+  },
+  "governance": {
+    "boardMembers": [
+      {
+        "name": "Jan Magnus Kniving",
+        "role": "Ledamot",
+        "fromDate": null,
+        "birthYear": null,
+        "city": null,
+        "country": null
+      },
+      {
+        "name": "Thomas Birger Edselius",
+        "role": "Suppleant",
+        "fromDate": null,
+        "birthYear": null,
+        "city": null,
+        "country": null
+      },
+      {
+        "name": "Ado Korda",
+        "role": "Revisor",
+        "fromDate": null,
+        "birthYear": null,
+        "city": null,
+        "country": null
+      }
+    ],
+    "signatories": null,
+    "owners": null
+  },
+  "financialSummary": {
+    "turnoverRange_SEK": "5000 - 9999",
+    "employees": "3",
+    "revenue_SEK": "4899",
+    "profit_SEK": "134",
+    "equity_SEK": null,
+    "assets_SEK": null,
+    "liabilities_SEK": null,
+    "profitMargin": null,
+    "liquidity": null,
+    "solvency": null,
+    "cashFlow_SEK": null,
+    "taxDebt_SEK": null
+  },
+  "accountingHistory": [
+    {
+      "year": "2024",
+      "period": "2024-12",
+      "lengthMonths": null,
+      "currency": "SEK",
+      "consolidated": null,
+      "submittedDate": null,
+      "accounts": [
+        {
+          "code": "ADI",
+          "amount": 49.0,
+          "code_translated": "Övriga rörelseintäkter"
+        },
+        {
+          "code": "ADK",
+          "amount": 0.0,
+          "code_translated": "Övriga finansiella kostnader"
+        },
+        {
+          "code": "ADR",
+          "amount": 49.0,
+          "code_translated": "Övrig omsättning"
+        },
+        {
+          "code": "AK",
+          "amount": 50.0,
+          "code_translated": "Aktiekapital"
+        },
+        {
+          "code": "ANT",
+          "amount": 3.0,
+          "code_translated": "Anställda"
+        },
+        {
+          "code": "avk_eget_kapital",
+          "amount": 2.4,
+          "code_translated": "Avkastning eget kapital i %"
+        },
+        {
+          "code": "avk_totalt_kapital",
+          "amount": 2.1,
+          "code_translated": "Avkastning totalt kapital i %"
+        },
+        {
+          "code": "RPE",
+          "amount": 1633.0,
+          "code_translated": "Omsättning per anställd i Tkr"
+        },
+        {
+          "code": "CPE",
+          "amount": 342.0,
+          "code_translated": "Personalkostnader per anställd (i 1000)"
+        },
+        {
+          "code": "DR",
+          "amount": 134.0,
+          "code_translated": "Årets resultat"
+        },
+        {
+          "code": "EK",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "EKA",
+          "amount": 86.2,
+          "code_translated": "Soliditet i %"
+        },
+        {
+          "code": "FI",
+          "amount": 1.0,
+          "code_translated": "Finansiella intäkter"
+        },
+        {
+          "code": "FK",
+          "amount": 0.0,
+          "code_translated": "Finansiella kostnader"
+        },
+        {
+          "code": "GG",
+          "amount": null,
+          "code_translated": "Skuldsättningsgrad"
+        },
+        {
+          "code": "KBP",
+          "amount": 735.0,
+          "code_translated": "Kassa och bank"
+        },
+        {
+          "code": "LG",
+          "amount": 76.0,
+          "code_translated": "Leverantörsskulder"
+        },
+        {
+          "code": "loner_ovriga",
+          "amount": null,
+          "code_translated": "Löner övriga"
+        },
+        {
+          "code": "loner_styrelse_vd",
+          "amount": null,
+          "code_translated": "Löner styrelse och VD"
+        },
+        {
+          "code": "ORS",
+          "amount": 170.0,
+          "code_translated": "Resultat före skatt"
+        },
+        {
+          "code": "resultat_e_avskrivningar",
+          "amount": 34.0,
+          "code_translated": "Rörelseresultat efter avskrivningar"
+        },
+        {
+          "code": "resultat_e_finansnetto",
+          "amount": 35.0,
+          "code_translated": "Resultat efter finansnetto"
+        },
+        {
+          "code": "RG",
+          "amount": 358.3,
+          "code_translated": "Kassalikviditet i %"
+        },
+        {
+          "code": "SAP",
+          "amount": 0.0,
+          "code_translated": "Avsättningar"
+        },
+        {
+          "code": "SDI",
+          "amount": 4899.0,
+          "code_translated": "Omsättning"
+        },
+        {
+          "code": "SED",
+          "amount": 1710.0,
+          "code_translated": "Summa tillgångar"
+        },
+        {
+          "code": "SI",
+          "amount": 4850.0,
+          "code_translated": "Nettoomsättning"
+        },
+        {
+          "code": "SEK",
+          "amount": 1474.0,
+          "code_translated": "Eget kapital"
+        },
+        {
+          "code": "SF",
+          "amount": 104.0,
+          "code_translated": "Kundfordringar"
+        },
+        {
+          "code": "SFA",
+          "amount": 868.0,
+          "code_translated": "Anläggningstillgångar"
+        },
+        {
+          "code": "SGE",
+          "amount": 1710.0,
+          "code_translated": "Summa eget kapital och skulder"
+        },
+        {
+          "code": "SIA",
+          "amount": 0.0,
+          "code_translated": "Immateriella anläggningstillgångar"
+        },
+        {
+          "code": "SIK",
+          "amount": 1424.0,
+          "code_translated": "Fritt eget kapital"
+        },
+        {
+          "code": "SKG",
+          "amount": 235.0,
+          "code_translated": "Kortfristiga skulder"
+        },
+        {
+          "code": "SKGKI",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "SKO",
+          "amount": -36.0,
+          "code_translated": "Skatt på årets resultat"
+        },
+        {
+          "code": "SLG",
+          "amount": 0.0,
+          "code_translated": "Långfristiga skulder"
+        },
+        {
+          "code": "SOM",
+          "amount": 842.0,
+          "code_translated": "Omsättningstillgångar"
+        },
+        {
+          "code": "SUB",
+          "amount": 1424.0,
+          "code_translated": "Föreslagen utdelning"
+        },
+        {
+          "code": "summa_finansiella_anltillg",
+          "amount": 863.0,
+          "code_translated": "Finansiella anläggningstillgångar"
+        },
+        {
+          "code": "summa_langfristiga_skulder",
+          "amount": 2.0,
+          "code_translated": "Långfristiga skulder"
+        },
+        {
+          "code": "summa_rorelsekostnader",
+          "amount": -4864.0,
+          "code_translated": "Rörelsekostnader"
+        },
+        {
+          "code": "SV",
+          "amount": 0.0,
+          "code_translated": "Varulager"
+        },
+        {
+          "code": "SVD",
+          "amount": 5.0,
+          "code_translated": "Materiella anläggningstillgångar"
+        },
+        {
+          "code": "UTR",
+          "amount": 0.0,
+          "code_translated": "Obeskattade reserver"
+        },
+        {
+          "code": "FSD",
+          "amount": 135.0,
+          "code_translated": null
+        },
+        {
+          "code": "KB",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "AWA",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "IAC",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "MIN",
+          "amount": null,
+          "code_translated": null
+        },
+        {
+          "code": "BE",
+          "amount": 0.0,
+          "code_translated": "Lagerförändring"
+        },
+        {
+          "code": "TR",
+          "amount": 0.7,
+          "code_translated": "Vinstmarginal i %"
+        },
+        {
+          "code": "EBITDA",
+          "amount": 34.0,
+          "code_translated": "EBITDA"
+        }
+      ]
+    },
+    {
+      "year": "2023",
+      "period": "2023-12",
+      "lengthMonths": null,
+      "currency": "SEK",
+      "consolidated": null,
+      "submittedDate": null,
+      "accounts": [
+        {
+          "code": "ADI",
+          "amount": 39.0,
+          "code_translated": "Övriga rörelseintäkter"
+        },
+        {
+          "code": "ADK",
+          "amount": 0.0,
+          "code_translated": "Övriga finansiella kostnader"
+        },
+        {
+          "code": "ADR",
+          "amount": 39.0,
+          "code_translated": "Övrig omsättning"
+        },
+        {
+          "code": "AK",
+          "amount": 50.0,
+          "code_translated": "Aktiekapital"
+        },
+        {
+          "code": "ANT",
+          "amount": 3.0,
+          "code_translated": "Anställda"
+        },
+        {
+          "code": "avk_eget_kapital",
+          "amount": 50.3,
+          "code_translated": "Avkastning eget kapital i %"
+        },
+        {
+          "code": "avk_totalt_kapital",
+          "amount": 38.5,
+          "code_translated": "Avkastning totalt kapital i %"
+        },
+        {
+          "code": "RPE",
+          "amount": 2177.0,
+          "code_translated": "Omsättning per anställd i Tkr"
+        },
+        {
+          "code": "CPE",
+          "amount": 518.0,
+          "code_translated": "Personalkostnader per anställd (i 1000)"
+        },
+        {
+          "code": "DR",
+          "amount": 565.0,
+          "code_translated": "Årets resultat"
+        },
+        {
+          "code": "EK",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "EKA",
+          "amount": 75.9,
+          "code_translated": "Soliditet i %"
+        },
+        {
+          "code": "FI",
+          "amount": 106.0,
+          "code_translated": "Finansiella intäkter"
+        },
+        {
+          "code": "FK",
+          "amount": -7.0,
+          "code_translated": "Finansiella kostnader"
+        },
+        {
+          "code": "GG",
+          "amount": 0.3,
+          "code_translated": "Skuldsättningsgrad"
+        },
+        {
+          "code": "KBP",
+          "amount": 720.0,
+          "code_translated": "Kassa och bank"
+        },
+        {
+          "code": "LG",
+          "amount": 64.0,
+          "code_translated": "Leverantörsskulder"
+        },
+        {
+          "code": "loner_ovriga",
+          "amount": null,
+          "code_translated": "Löner övriga"
+        },
+        {
+          "code": "loner_styrelse_vd",
+          "amount": null,
+          "code_translated": "Löner styrelse och VD"
+        },
+        {
+          "code": "ORS",
+          "amount": 648.0,
+          "code_translated": "Resultat före skatt"
+        },
+        {
+          "code": "resultat_e_avskrivningar",
+          "amount": 684.0,
+          "code_translated": "Rörelseresultat efter avskrivningar"
+        },
+        {
+          "code": "resultat_e_finansnetto",
+          "amount": 783.0,
+          "code_translated": "Resultat efter finansnetto"
+        },
+        {
+          "code": "RG",
+          "amount": 313.1,
+          "code_translated": "Kassalikviditet i %"
+        },
+        {
+          "code": "SAP",
+          "amount": 0.0,
+          "code_translated": "Avsättningar"
+        },
+        {
+          "code": "SDI",
+          "amount": 6530.0,
+          "code_translated": "Omsättning"
+        },
+        {
+          "code": "SED",
+          "amount": 2054.0,
+          "code_translated": "Summa tillgångar"
+        },
+        {
+          "code": "SI",
+          "amount": 6491.0,
+          "code_translated": "Nettoomsättning"
+        },
+        {
+          "code": "SEK",
+          "amount": 1450.0,
+          "code_translated": "Eget kapital"
+        },
+        {
+          "code": "SF",
+          "amount": 642.0,
+          "code_translated": "Kundfordringar"
+        },
+        {
+          "code": "SFA",
+          "amount": 598.0,
+          "code_translated": "Anläggningstillgångar"
+        },
+        {
+          "code": "SGE",
+          "amount": 2054.0,
+          "code_translated": "Summa eget kapital och skulder"
+        },
+        {
+          "code": "SIA",
+          "amount": 0.0,
+          "code_translated": "Immateriella anläggningstillgångar"
+        },
+        {
+          "code": "SIK",
+          "amount": 1400.0,
+          "code_translated": "Fritt eget kapital"
+        },
+        {
+          "code": "SKG",
+          "amount": 465.0,
+          "code_translated": "Kortfristiga skulder"
+        },
+        {
+          "code": "SKGKI",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "SKO",
+          "amount": -83.0,
+          "code_translated": "Skatt på årets resultat"
+        },
+        {
+          "code": "SLG",
+          "amount": 0.0,
+          "code_translated": "Långfristiga skulder"
+        },
+        {
+          "code": "SOM",
+          "amount": 1456.0,
+          "code_translated": "Omsättningstillgångar"
+        },
+        {
+          "code": "SUB",
+          "amount": 0.0,
+          "code_translated": "Föreslagen utdelning"
+        },
+        {
+          "code": "summa_finansiella_anltillg",
+          "amount": 598.0,
+          "code_translated": "Finansiella anläggningstillgångar"
+        },
+        {
+          "code": "summa_langfristiga_skulder",
+          "amount": 5.0,
+          "code_translated": "Långfristiga skulder"
+        },
+        {
+          "code": "summa_rorelsekostnader",
+          "amount": -5846.0,
+          "code_translated": "Rörelsekostnader"
+        },
+        {
+          "code": "SV",
+          "amount": 0.0,
+          "code_translated": "Varulager"
+        },
+        {
+          "code": "SVD",
+          "amount": 0.0,
+          "code_translated": "Materiella anläggningstillgångar"
+        },
+        {
+          "code": "UTR",
+          "amount": 135.0,
+          "code_translated": "Obeskattade reserver"
+        },
+        {
+          "code": "FSD",
+          "amount": -135.0,
+          "code_translated": null
+        },
+        {
+          "code": "KB",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "AWA",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "IAC",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "MIN",
+          "amount": null,
+          "code_translated": null
+        },
+        {
+          "code": "BE",
+          "amount": 0.0,
+          "code_translated": "Lagerförändring"
+        },
+        {
+          "code": "TR",
+          "amount": 12.1,
+          "code_translated": "Vinstmarginal i %"
+        },
+        {
+          "code": "EBITDA",
+          "amount": 684.0,
+          "code_translated": "EBITDA"
+        }
+      ]
+    },
+    {
+      "year": "2022",
+      "period": "2022-12",
+      "lengthMonths": null,
+      "currency": "SEK",
+      "consolidated": null,
+      "submittedDate": null,
+      "accounts": [
+        {
+          "code": "ADI",
+          "amount": 24.0,
+          "code_translated": "Övriga rörelseintäkter"
+        },
+        {
+          "code": "ADK",
+          "amount": 0.0,
+          "code_translated": "Övriga finansiella kostnader"
+        },
+        {
+          "code": "ADR",
+          "amount": 24.0,
+          "code_translated": "Övrig omsättning"
+        },
+        {
+          "code": "AK",
+          "amount": 50.0,
+          "code_translated": "Aktiekapital"
+        },
+        {
+          "code": "ANT",
+          "amount": 2.0,
+          "code_translated": "Anställda"
+        },
+        {
+          "code": "avk_eget_kapital",
+          "amount": -23.4,
+          "code_translated": "Avkastning eget kapital i %"
+        },
+        {
+          "code": "avk_totalt_kapital",
+          "amount": 6.5,
+          "code_translated": "Avkastning totalt kapital i %"
+        },
+        {
+          "code": "RPE",
+          "amount": 3153.0,
+          "code_translated": "Omsättning per anställd i Tkr"
+        },
+        {
+          "code": "CPE",
+          "amount": 653.0,
+          "code_translated": "Personalkostnader per anställd (i 1000)"
+        },
+        {
+          "code": "DR",
+          "amount": -250.0,
+          "code_translated": "Årets resultat"
+        },
+        {
+          "code": "EK",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "EKA",
+          "amount": 70.4,
+          "code_translated": "Soliditet i %"
+        },
+        {
+          "code": "FI",
+          "amount": 173.0,
+          "code_translated": "Finansiella intäkter"
+        },
+        {
+          "code": "FK",
+          "amount": 0.0,
+          "code_translated": "Finansiella kostnader"
+        },
+        {
+          "code": "GG",
+          "amount": null,
+          "code_translated": "Skuldsättningsgrad"
+        },
+        {
+          "code": "KBP",
+          "amount": 804.0,
+          "code_translated": "Kassa och bank"
+        },
+        {
+          "code": "LG",
+          "amount": 16.0,
+          "code_translated": "Leverantörsskulder"
+        },
+        {
+          "code": "loner_ovriga",
+          "amount": null,
+          "code_translated": "Löner övriga"
+        },
+        {
+          "code": "loner_styrelse_vd",
+          "amount": null,
+          "code_translated": "Löner styrelse och VD"
+        },
+        {
+          "code": "ORS",
+          "amount": -250.0,
+          "code_translated": "Resultat före skatt"
+        },
+        {
+          "code": "resultat_e_avskrivningar",
+          "amount": -75.0,
+          "code_translated": "Rörelseresultat efter avskrivningar"
+        },
+        {
+          "code": "resultat_e_finansnetto",
+          "amount": -249.0,
+          "code_translated": "Resultat efter finansnetto"
+        },
+        {
+          "code": "RG",
+          "amount": 311.9,
+          "code_translated": "Kassalikviditet i %"
+        },
+        {
+          "code": "SAP",
+          "amount": 0.0,
+          "code_translated": "Avsättningar"
+        },
+        {
+          "code": "SDI",
+          "amount": 6305.0,
+          "code_translated": "Omsättning"
+        },
+        {
+          "code": "SED",
+          "amount": 1511.0,
+          "code_translated": "Summa tillgångar"
+        },
+        {
+          "code": "SI",
+          "amount": 6281.0,
+          "code_translated": "Nettoomsättning"
+        },
+        {
+          "code": "SEK",
+          "amount": 1064.0,
+          "code_translated": "Eget kapital"
+        },
+        {
+          "code": "SF",
+          "amount": 568.0,
+          "code_translated": "Kundfordringar"
+        },
+        {
+          "code": "SFA",
+          "amount": 126.0,
+          "code_translated": "Anläggningstillgångar"
+        },
+        {
+          "code": "SGE",
+          "amount": 1511.0,
+          "code_translated": "Summa eget kapital och skulder"
+        },
+        {
+          "code": "SIA",
+          "amount": 0.0,
+          "code_translated": "Immateriella anläggningstillgångar"
+        },
+        {
+          "code": "SIK",
+          "amount": 1014.0,
+          "code_translated": "Fritt eget kapital"
+        },
+        {
+          "code": "SKG",
+          "amount": 444.0,
+          "code_translated": "Kortfristiga skulder"
+        },
+        {
+          "code": "SKGKI",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "SKO",
+          "amount": 0.0,
+          "code_translated": "Skatt på årets resultat"
+        },
+        {
+          "code": "SLG",
+          "amount": 0.0,
+          "code_translated": "Långfristiga skulder"
+        },
+        {
+          "code": "SOM",
+          "amount": 1385.0,
+          "code_translated": "Omsättningstillgångar"
+        },
+        {
+          "code": "SUB",
+          "amount": 0.0,
+          "code_translated": "Föreslagen utdelning"
+        },
+        {
+          "code": "summa_finansiella_anltillg",
+          "amount": 126.0,
+          "code_translated": "Finansiella anläggningstillgångar"
+        },
+        {
+          "code": "summa_langfristiga_skulder",
+          "amount": 3.0,
+          "code_translated": "Långfristiga skulder"
+        },
+        {
+          "code": "summa_rorelsekostnader",
+          "amount": -6380.0,
+          "code_translated": "Rörelsekostnader"
+        },
+        {
+          "code": "SV",
+          "amount": 0.0,
+          "code_translated": "Varulager"
+        },
+        {
+          "code": "SVD",
+          "amount": 0.0,
+          "code_translated": "Materiella anläggningstillgångar"
+        },
+        {
+          "code": "UTR",
+          "amount": 0.0,
+          "code_translated": "Obeskattade reserver"
+        },
+        {
+          "code": "FSD",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "KB",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "AWA",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "IAC",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "MIN",
+          "amount": null,
+          "code_translated": null
+        },
+        {
+          "code": "BE",
+          "amount": 0.0,
+          "code_translated": "Lagerförändring"
+        },
+        {
+          "code": "TR",
+          "amount": 1.6,
+          "code_translated": "Vinstmarginal i %"
+        },
+        {
+          "code": "EBITDA",
+          "amount": -75.0,
+          "code_translated": "EBITDA"
+        }
+      ]
+    },
+    {
+      "year": "2021",
+      "period": "2021-12",
+      "lengthMonths": null,
+      "currency": "SEK",
+      "consolidated": null,
+      "submittedDate": null,
+      "accounts": [
+        {
+          "code": "ADI",
+          "amount": 0.0,
+          "code_translated": "Övriga rörelseintäkter"
+        },
+        {
+          "code": "ADK",
+          "amount": 0.0,
+          "code_translated": "Övriga finansiella kostnader"
+        },
+        {
+          "code": "ADR",
+          "amount": 0.0,
+          "code_translated": "Övrig omsättning"
+        },
+        {
+          "code": "AK",
+          "amount": 50.0,
+          "code_translated": "Aktiekapital"
+        },
+        {
+          "code": "ANT",
+          "amount": 2.0,
+          "code_translated": "Anställda"
+        },
+        {
+          "code": "avk_eget_kapital",
+          "amount": 38.4,
+          "code_translated": "Avkastning eget kapital i %"
+        },
+        {
+          "code": "avk_totalt_kapital",
+          "amount": 27.5,
+          "code_translated": "Avkastning totalt kapital i %"
+        },
+        {
+          "code": "RPE",
+          "amount": 3036.0,
+          "code_translated": "Omsättning per anställd i Tkr"
+        },
+        {
+          "code": "CPE",
+          "amount": 536.0,
+          "code_translated": "Personalkostnader per anställd (i 1000)"
+        },
+        {
+          "code": "DR",
+          "amount": 400.0,
+          "code_translated": "Årets resultat"
+        },
+        {
+          "code": "EK",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "EKA",
+          "amount": 71.0,
+          "code_translated": "Soliditet i %"
+        },
+        {
+          "code": "FI",
+          "amount": 1.0,
+          "code_translated": "Finansiella intäkter"
+        },
+        {
+          "code": "FK",
+          "amount": -5.0,
+          "code_translated": "Finansiella kostnader"
+        },
+        {
+          "code": "GG",
+          "amount": null,
+          "code_translated": "Skuldsättningsgrad"
+        },
+        {
+          "code": "KBP",
+          "amount": 1481.0,
+          "code_translated": "Kassa och bank"
+        },
+        {
+          "code": "LG",
+          "amount": 5.0,
+          "code_translated": "Leverantörsskulder"
+        },
+        {
+          "code": "loner_ovriga",
+          "amount": null,
+          "code_translated": "Löner övriga"
+        },
+        {
+          "code": "loner_styrelse_vd",
+          "amount": null,
+          "code_translated": "Löner styrelse och VD"
+        },
+        {
+          "code": "ORS",
+          "amount": 504.0,
+          "code_translated": "Resultat före skatt"
+        },
+        {
+          "code": "resultat_e_avskrivningar",
+          "amount": 508.0,
+          "code_translated": "Rörelseresultat efter avskrivningar"
+        },
+        {
+          "code": "resultat_e_finansnetto",
+          "amount": 504.0,
+          "code_translated": "Resultat efter finansnetto"
+        },
+        {
+          "code": "RG",
+          "amount": 345.2,
+          "code_translated": "Kassalikviditet i %"
+        },
+        {
+          "code": "SAP",
+          "amount": 0.0,
+          "code_translated": "Avsättningar"
+        },
+        {
+          "code": "SDI",
+          "amount": 6071.0,
+          "code_translated": "Omsättning"
+        },
+        {
+          "code": "SED",
+          "amount": 1850.0,
+          "code_translated": "Summa tillgångar"
+        },
+        {
+          "code": "SI",
+          "amount": 6071.0,
+          "code_translated": "Nettoomsättning"
+        },
+        {
+          "code": "SEK",
+          "amount": 1314.0,
+          "code_translated": "Eget kapital"
+        },
+        {
+          "code": "SF",
+          "amount": 257.0,
+          "code_translated": "Kundfordringar"
+        },
+        {
+          "code": "SFA",
+          "amount": 0.0,
+          "code_translated": "Anläggningstillgångar"
+        },
+        {
+          "code": "SGE",
+          "amount": 1850.0,
+          "code_translated": "Summa eget kapital och skulder"
+        },
+        {
+          "code": "SIA",
+          "amount": 0.0,
+          "code_translated": "Immateriella anläggningstillgångar"
+        },
+        {
+          "code": "SIK",
+          "amount": 1264.0,
+          "code_translated": "Fritt eget kapital"
+        },
+        {
+          "code": "SKG",
+          "amount": 536.0,
+          "code_translated": "Kortfristiga skulder"
+        },
+        {
+          "code": "SKGKI",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "SKO",
+          "amount": -104.0,
+          "code_translated": "Skatt på årets resultat"
+        },
+        {
+          "code": "SLG",
+          "amount": 0.0,
+          "code_translated": "Långfristiga skulder"
+        },
+        {
+          "code": "SOM",
+          "amount": 1850.0,
+          "code_translated": "Omsättningstillgångar"
+        },
+        {
+          "code": "SUB",
+          "amount": 0.0,
+          "code_translated": "Föreslagen utdelning"
+        },
+        {
+          "code": "summa_finansiella_anltillg",
+          "amount": 0.0,
+          "code_translated": "Finansiella anläggningstillgångar"
+        },
+        {
+          "code": "summa_langfristiga_skulder",
+          "amount": 0.0,
+          "code_translated": "Långfristiga skulder"
+        },
+        {
+          "code": "summa_rorelsekostnader",
+          "amount": -5563.0,
+          "code_translated": "Rörelsekostnader"
+        },
+        {
+          "code": "SV",
+          "amount": 0.0,
+          "code_translated": "Varulager"
+        },
+        {
+          "code": "SVD",
+          "amount": 0.0,
+          "code_translated": "Materiella anläggningstillgångar"
+        },
+        {
+          "code": "UTR",
+          "amount": 0.0,
+          "code_translated": "Obeskattade reserver"
+        },
+        {
+          "code": "FSD",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "KB",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "AWA",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "IAC",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "MIN",
+          "amount": null,
+          "code_translated": null
+        },
+        {
+          "code": "BE",
+          "amount": 0.0,
+          "code_translated": "Lagerförändring"
+        },
+        {
+          "code": "TR",
+          "amount": 8.4,
+          "code_translated": "Vinstmarginal i %"
+        },
+        {
+          "code": "EBITDA",
+          "amount": 508.0,
+          "code_translated": "EBITDA"
+        }
+      ]
+    },
+    {
+      "year": "2020",
+      "period": "2020-12",
+      "lengthMonths": null,
+      "currency": "SEK",
+      "consolidated": null,
+      "submittedDate": null,
+      "accounts": [
+        {
+          "code": "ADI",
+          "amount": 0.0,
+          "code_translated": "Övriga rörelseintäkter"
+        },
+        {
+          "code": "ADK",
+          "amount": 0.0,
+          "code_translated": "Övriga finansiella kostnader"
+        },
+        {
+          "code": "ADR",
+          "amount": 0.0,
+          "code_translated": "Övrig omsättning"
+        },
+        {
+          "code": "AK",
+          "amount": 50.0,
+          "code_translated": "Aktiekapital"
+        },
+        {
+          "code": "ANT",
+          "amount": 2.0,
+          "code_translated": "Anställda"
+        },
+        {
+          "code": "avk_eget_kapital",
+          "amount": 57.3,
+          "code_translated": "Avkastning eget kapital i %"
+        },
+        {
+          "code": "avk_totalt_kapital",
+          "amount": 39.6,
+          "code_translated": "Avkastning totalt kapital i %"
+        },
+        {
+          "code": "RPE",
+          "amount": 2792.0,
+          "code_translated": "Omsättning per anställd i Tkr"
+        },
+        {
+          "code": "CPE",
+          "amount": 301.0,
+          "code_translated": "Personalkostnader per anställd (i 1000)"
+        },
+        {
+          "code": "DR",
+          "amount": 415.0,
+          "code_translated": "Årets resultat"
+        },
+        {
+          "code": "EK",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "EKA",
+          "amount": 68.8,
+          "code_translated": "Soliditet i %"
+        },
+        {
+          "code": "FI",
+          "amount": 0.0,
+          "code_translated": "Finansiella intäkter"
+        },
+        {
+          "code": "FK",
+          "amount": -4.0,
+          "code_translated": "Finansiella kostnader"
+        },
+        {
+          "code": "GG",
+          "amount": null,
+          "code_translated": "Skuldsättningsgrad"
+        },
+        {
+          "code": "KBP",
+          "amount": 1011.0,
+          "code_translated": "Kassa och bank"
+        },
+        {
+          "code": "LG",
+          "amount": 3.0,
+          "code_translated": "Leverantörsskulder"
+        },
+        {
+          "code": "loner_ovriga",
+          "amount": null,
+          "code_translated": "Löner övriga"
+        },
+        {
+          "code": "loner_styrelse_vd",
+          "amount": null,
+          "code_translated": "Löner styrelse och VD"
+        },
+        {
+          "code": "ORS",
+          "amount": 532.0,
+          "code_translated": "Resultat före skatt"
+        },
+        {
+          "code": "resultat_e_avskrivningar",
+          "amount": 535.0,
+          "code_translated": "Rörelseresultat efter avskrivningar"
+        },
+        {
+          "code": "resultat_e_finansnetto",
+          "amount": 532.0,
+          "code_translated": "Resultat efter finansnetto"
+        },
+        {
+          "code": "RG",
+          "amount": 319.4,
+          "code_translated": "Kassalikviditet i %"
+        },
+        {
+          "code": "SAP",
+          "amount": 0.0,
+          "code_translated": "Avsättningar"
+        },
+        {
+          "code": "SDI",
+          "amount": 5583.0,
+          "code_translated": "Omsättning"
+        },
+        {
+          "code": "SED",
+          "amount": 1351.0,
+          "code_translated": "Summa tillgångar"
+        },
+        {
+          "code": "SI",
+          "amount": 5583.0,
+          "code_translated": "Nettoomsättning"
+        },
+        {
+          "code": "SEK",
+          "amount": 929.0,
+          "code_translated": "Eget kapital"
+        },
+        {
+          "code": "SF",
+          "amount": 193.0,
+          "code_translated": "Kundfordringar"
+        },
+        {
+          "code": "SFA",
+          "amount": 0.0,
+          "code_translated": "Anläggningstillgångar"
+        },
+        {
+          "code": "SGE",
+          "amount": 1351.0,
+          "code_translated": "Summa eget kapital och skulder"
+        },
+        {
+          "code": "SIA",
+          "amount": 0.0,
+          "code_translated": "Immateriella anläggningstillgångar"
+        },
+        {
+          "code": "SIK",
+          "amount": 879.0,
+          "code_translated": "Fritt eget kapital"
+        },
+        {
+          "code": "SKG",
+          "amount": 423.0,
+          "code_translated": "Kortfristiga skulder"
+        },
+        {
+          "code": "SKGKI",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "SKO",
+          "amount": -117.0,
+          "code_translated": "Skatt på årets resultat"
+        },
+        {
+          "code": "SLG",
+          "amount": 0.0,
+          "code_translated": "Långfristiga skulder"
+        },
+        {
+          "code": "SOM",
+          "amount": 1351.0,
+          "code_translated": "Omsättningstillgångar"
+        },
+        {
+          "code": "SUB",
+          "amount": 0.0,
+          "code_translated": "Föreslagen utdelning"
+        },
+        {
+          "code": "summa_finansiella_anltillg",
+          "amount": 0.0,
+          "code_translated": "Finansiella anläggningstillgångar"
+        },
+        {
+          "code": "summa_langfristiga_skulder",
+          "amount": 0.0,
+          "code_translated": "Långfristiga skulder"
+        },
+        {
+          "code": "summa_rorelsekostnader",
+          "amount": -5047.0,
+          "code_translated": "Rörelsekostnader"
+        },
+        {
+          "code": "SV",
+          "amount": 0.0,
+          "code_translated": "Varulager"
+        },
+        {
+          "code": "SVD",
+          "amount": 0.0,
+          "code_translated": "Materiella anläggningstillgångar"
+        },
+        {
+          "code": "UTR",
+          "amount": 0.0,
+          "code_translated": "Obeskattade reserver"
+        },
+        {
+          "code": "FSD",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "KB",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "AWA",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "IAC",
+          "amount": 0.0,
+          "code_translated": null
+        },
+        {
+          "code": "MIN",
+          "amount": null,
+          "code_translated": null
+        },
+        {
+          "code": "BE",
+          "amount": 0.0,
+          "code_translated": "Lagerförändring"
+        },
+        {
+          "code": "TR",
+          "amount": 9.6,
+          "code_translated": "Vinstmarginal i %"
+        },
+        {
+          "code": "EBITDA",
+          "amount": 535.0,
+          "code_translated": "EBITDA"
+        }
+      ]
+    }
+  ],
+  "risks": {
+    "paymentRemarks": false,
+    "collectionCases": null,
+    "bankruptcies": null,
+    "mortgages": false,
+    "encumbrances": null,
+    "creditRating": null,
+    "riskClass": null
+  },
+  "meta": {
+    "lastUpdated": null,
+    "sourceSystem": null,
+    "reportCount": null
+  }
+}

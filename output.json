@@ -1,0 +1,125 @@
+{
+    "metadata": {
+        "total_pages": 56553,
+        "current_page": 1,
+        "total_companies": 113106
+    },
+    "companies": [
+        {
+            "company_id": 171695,
+            "imported": true,
+            "organization_number": "5568324163",
+            "visiting_street": "Essingestråket 15 LGH 1205",
+            "visiting_zipcode": "11266",
+            "visiting_region_name": "STOCKHOLM",
+            "legalgroup_text": "Privat aktiebolag",
+            "top_director_name": "Konovalov\\\\, Andrei",
+            "turnover_interval": "2500 - 4999 tkr",
+            "company_name": "A & A Est Bygg AB",
+            "visiting_town": "Stockholm",
+            "phone_number": "076-0772418",
+            "sni_code": "41200",
+            "sni_text": "Entreprenörer för bostadshus och andra byggnader",
+            "accounts_data": [
+                {
+                    "date_from": "2019-07-01",
+                    "date_to": "2020-06-30",
+                    "pl_net_operating_income": 6645,
+                    "n_no_employees": 2,
+                    "bs_net_profit_loss": 265,
+                    "bs_total_turnover_assets": 946
+                },
+                {
+                    "date_from": "2020-07-01",
+                    "date_to": "2021-06-30",
+                    "pl_net_operating_income": 4440,
+                    "n_no_employees": 2,
+                    "bs_net_profit_loss": -211,
+                    "bs_total_turnover_assets": 1026
+                },
+                {
+                    "date_from": "2021-07-01",
+                    "date_to": "2022-06-30",
+                    "pl_net_operating_income": 4237,
+                    "n_no_employees": 4,
+                    "bs_net_profit_loss": 271,
+                    "bs_total_turnover_assets": 561
+                },
+                {
+                    "date_from": "2022-07-01",
+                    "date_to": "2023-06-30",
+                    "pl_net_operating_income": 5634,
+                    "n_no_employees": 0,
+                    "bs_net_profit_loss": -144,
+                    "bs_total_turnover_assets": 288
+                },
+                {
+                    "date_from": "2023-07-01",
+                    "date_to": "2024-06-30",
+                    "pl_net_operating_income": 3161,
+                    "n_no_employees": 3,
+                    "bs_net_profit_loss": -109,
+                    "bs_total_turnover_assets": 117
+                }
+            ]
+        },
+        {
+            "company_id": 72785,
+            "imported": true,
+            "organization_number": "5561689562",
+            "visiting_street": "Rehnsgatan 11",
+            "visiting_zipcode": "11357",
+            "visiting_region_name": "STOCKHOLM",
+            "legalgroup_text": "Privat aktiebolag",
+            "top_director_name": "Ehrich\\\\, Hans Otto Georg",
+            "turnover_interval": "2500 - 4999 tkr",
+            "company_name": "A & E Design Aktiebolag",
+            "visiting_town": "Stockholm",
+            "phone_number": "08-6730159",
+            "sni_code": "74101",
+            "sni_text": "Industri- och produktdesignföretag",
+            "accounts_data": [
+                {
+                    "date_from": "2019-05-01",
+                    "date_to": "2020-04-30",
+                    "pl_net_operating_income": 3003,
+                    "n_no_employees": 2,
+                    "bs_net_profit_loss": 834,
+                    "bs_total_turnover_assets": 1402
+                },
+                {
+                    "date_from": "2020-05-01",
+                    "date_to": "2021-04-30",
+                    "pl_net_operating_income": 2676,
+                    "n_no_employees": 2,
+                    "bs_net_profit_loss": 602,
+                    "bs_total_turnover_assets": 1582
+                },
+                {
+                    "date_from": "2021-05-01",
+                    "date_to": "2022-04-30",
+                    "pl_net_operating_income": 3649,
+                    "n_no_employees": 2,
+                    "bs_net_profit_loss": 1326,
+                    "bs_total_turnover_assets": 2674
+                },
+                {
+                    "date_from": "2022-05-01",
+                    "date_to": "2023-04-30",
+                    "pl_net_operating_income": 4000,
+                    "n_no_employees": 2,
+                    "bs_net_profit_loss": 779,
+                    "bs_total_turnover_assets": 3422
+                },
+                {
+                    "date_from": "2023-05-01",
+                    "date_to": "2024-04-30",
+                    "pl_net_operating_income": 4105,
+                    "n_no_employees": 2,
+                    "bs_net_profit_loss": 1140,
+                    "bs_total_turnover_assets": 3498
+                }
+            ]
+        }
+    ]
+}
