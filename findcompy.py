@@ -8,7 +8,56 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 import time
 import re
+import threading
 from urllib.parse import urlparse
+
+# Semaphore to limit concurrent Selenium instances (max 3 at a time)
+_selenium_semaphore = threading.Semaphore(3)
+
+# Cache ChromeDriver path to avoid repeated installations
+_chromedriver_path = None
+_chromedriver_lock = threading.Lock()
+
+def _get_chromedriver_path():
+    """Get ChromeDriver path, caching it to avoid repeated installations"""
+    global _chromedriver_path
+    if _chromedriver_path:
+        return _chromedriver_path
+    
+    with _chromedriver_lock:
+        # Double-check after acquiring lock
+        if _chromedriver_path:
+            return _chromedriver_path
+        
+        try:
+            _chromedriver_path = ChromeDriverManager().install()
+            return _chromedriver_path
+        except Exception as e:
+            print(f"⚠️ Failed to install ChromeDriver: {e}")
+            return None
+
+def _force_cleanup_driver(driver):
+    """Force cleanup of ChromeDriver process"""
+    if not driver:
+        return
+    
+    try:
+        driver.quit()
+    except:
+        pass
+    
+    try:
+        if hasattr(driver, 'service') and driver.service and driver.service.process:
+            try:
+                driver.service.process.terminate()
+                driver.service.process.wait(timeout=5)
+            except:
+                try:
+                    driver.service.process.kill()
+                except:
+                    pass
+    except:
+        pass
 
 def search_company_google(email: str) -> str:
     domain = email.split('@')[-1].strip()  # FIXED: removed [0]
@@ -29,11 +78,40 @@ def search_company_google(email: str) -> str:
     chrome_options.add_experimental_option('useAutomationExtension', False)
     chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 
+    _selenium_semaphore.acquire()
     driver = None
+    
     try:
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+        # Get cached ChromeDriver path
+        chromedriver_path = _get_chromedriver_path()
+        if not chromedriver_path:
+            print(f"⚠️ ChromeDriver not available, skipping Google search")
+            return None
+        
+        # Retry logic for driver initialization
+        max_retries = 2
+        for attempt in range(max_retries):
+            try:
+                driver = webdriver.Chrome(service=Service(chromedriver_path), options=chrome_options)
+                break
+            except Exception as e:
+                if attempt < max_retries - 1:
+                    print(f"⚠️ ChromeDriver init attempt {attempt + 1} failed, retrying...")
+                    time.sleep(1)
+                    # Reset cached path to force reinstall on next call
+                    global _chromedriver_path
+                    _chromedriver_path = None
+                    chromedriver_path = _get_chromedriver_path()
+                    if not chromedriver_path:
+                        return None
+                else:
+                    raise
+        
+        if not driver:
+            return None
         driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
-        driver.set_page_load_timeout(30)
+        driver.set_page_load_timeout(20)  # Reduced timeout
+        driver.implicitly_wait(5)
         
         print(f"🌐 Loading Google search...")
         driver.get(f"https://www.google.com/search?q={query}")
@@ -125,11 +203,8 @@ def search_company_google(email: str) -> str:
         print(f"❌ Google search error: {e}")
         return None
     finally:
-        if driver:
-            try:
-                driver.quit()
-            except:
-                pass
+        _force_cleanup_driver(driver)
+        _selenium_semaphore.release()
 
 
 def search_company_bing(email: str) -> str:
@@ -145,10 +220,39 @@ def search_company_bing(email: str) -> str:
     chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 
+    _selenium_semaphore.acquire()
     driver = None
+    
     try:
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-        driver.set_page_load_timeout(30)
+        # Get cached ChromeDriver path
+        chromedriver_path = _get_chromedriver_path()
+        if not chromedriver_path:
+            print(f"⚠️ ChromeDriver not available, skipping Bing search")
+            return None
+        
+        # Retry logic for driver initialization
+        max_retries = 2
+        for attempt in range(max_retries):
+            try:
+                driver = webdriver.Chrome(service=Service(chromedriver_path), options=chrome_options)
+                driver.set_page_load_timeout(20)  # Reduced timeout
+                driver.implicitly_wait(5)
+                break
+            except Exception as e:
+                if attempt < max_retries - 1:
+                    print(f"⚠️ ChromeDriver init attempt {attempt + 1} failed, retrying...")
+                    time.sleep(1)
+                    # Reset cached path to force reinstall on next call
+                    global _chromedriver_path
+                    _chromedriver_path = None
+                    chromedriver_path = _get_chromedriver_path()
+                    if not chromedriver_path:
+                        return None
+                else:
+                    raise
+        
+        if not driver:
+            return None
         
         print(f"🌐 Loading Bing search...")
         driver.get(f"https://www.bing.com/search?q={query}")
@@ -225,11 +329,8 @@ def search_company_bing(email: str) -> str:
         print(f"❌ Bing search error: {e}")
         return None
     finally:
-        if driver:
-            try:
-                driver.quit()
-            except:
-                pass
+        _force_cleanup_driver(driver)
+        _selenium_semaphore.release()
 
 
 def search_company_duckduckgo(email: str) -> str:
@@ -245,10 +346,39 @@ def search_company_duckduckgo(email: str) -> str:
     chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 
+    _selenium_semaphore.acquire()
     driver = None
+    
     try:
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-        driver.set_page_load_timeout(30)
+        # Get cached ChromeDriver path
+        chromedriver_path = _get_chromedriver_path()
+        if not chromedriver_path:
+            print(f"⚠️ ChromeDriver not available, skipping DuckDuckGo search")
+            return None
+        
+        # Retry logic for driver initialization
+        max_retries = 2
+        for attempt in range(max_retries):
+            try:
+                driver = webdriver.Chrome(service=Service(chromedriver_path), options=chrome_options)
+                driver.set_page_load_timeout(20)  # Reduced timeout
+                driver.implicitly_wait(5)
+                break
+            except Exception as e:
+                if attempt < max_retries - 1:
+                    print(f"⚠️ ChromeDriver init attempt {attempt + 1} failed, retrying...")
+                    time.sleep(1)
+                    # Reset cached path to force reinstall on next call
+                    global _chromedriver_path
+                    _chromedriver_path = None
+                    chromedriver_path = _get_chromedriver_path()
+                    if not chromedriver_path:
+                        return None
+                else:
+                    raise
+        
+        if not driver:
+            return None
         
         print(f"🌐 Loading DuckDuckGo search...")
         driver.get(f"https://duckduckgo.com/?q={query}")
@@ -335,11 +465,8 @@ def search_company_duckduckgo(email: str) -> str:
         print(f"❌ DuckDuckGo search error: {e}")
         return None
     finally:
-        if driver:
-            try:
-                driver.quit()
-            except:
-                pass
+        _force_cleanup_driver(driver)
+        _selenium_semaphore.release()
 
 
 def extract_domain_base(domain: str) -> str:
@@ -388,7 +515,7 @@ def score_result(title: str, link: str, full_domain: str, domain_base: str) -> i
     
     # Negative signals - these are NOT what we want
     bad_patterns = [
-        'wikipedia', 'wiki', 'linkedin', 'facebook', 'twitter', 'instagram',
+        'wikipedia', 'wiki', 'linkedin', 'facebook', 'twitter', 'instagram', 'allabolag'
         'crunchbase', 'bloomberg', 'yahoo finance', 'google maps',
         'yelp', 'tripadvisor', 'directory', 'yellow pages',
         'search', 'find', 'locate', 'list of', 'companies like',
@@ -515,16 +642,3 @@ def search_company_with_fallbacks(email: str) -> str:
     print(f"⚠️ Using fallback: {fallback}")
     return fallback
 
-
-# Example usage
-# if __name__ == "__main__":
-#     test_emails = [
-#         "user@funnelbud.com",
-#         "danny@arjtransport.com"
-#     ]
-    
-#     for email in test_emails:
-#         print("\n" + "="*70)
-#         result = search_company_with_fallbacks(email)
-#         print(f"\n🎯 FINAL RESULT for {email}: {result}")
-#         print("="*70 + "\n")

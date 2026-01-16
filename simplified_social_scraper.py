@@ -228,26 +228,3 @@ def get_enhanced_social_media_simple(soup, base_url):
         print(f"        Error extracting social media: {e}")
         return {}
 
-# if __name__ == "__main__":
-#     # Test the simplified scraper
-#     import requests
-    
-#     test_url = "https://github.com"
-    
-#     try:
-#         headers = {
-#             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-#         }
-#         response = requests.get(test_url, headers=headers, timeout=10)
-#         soup = BeautifulSoup(response.text, 'html.parser')
-        
-#         social_links = get_social_media_links(soup, test_url)
-        
-#         print("Social Media Links Found:")
-#         for platform, urls in social_links.items():
-#             print(f"  {platform}: {urls}")
-        
-#         print(f"\nTotal: {sum(len(urls) for urls in social_links.values())} links across {len(social_links)} platforms")
-        
-#     except Exception as e:
-#         print(f"Error testing scraper: {e}")

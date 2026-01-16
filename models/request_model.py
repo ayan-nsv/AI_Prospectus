@@ -8,5 +8,6 @@ class RequestModel(BaseModel):
 
 class BatchRequestModel(BaseModel):
     org_numbers: List[str]
-    criteria: str
-    batch_size: Optional[int] = 5  # Process this many at a time
+    criteria: Optional[str] = None
+    batch_id: Optional[str] = None
+    batch_size: Optional[int] = 20  # Process this many at a time (increased for better performance)

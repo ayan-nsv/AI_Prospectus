@@ -312,11 +312,16 @@ async def clean_company_info(org_number):
     print(f"      📊 Getting company data for org number: {org_number}")
     logger.info(f"Getting company data for org number: {org_number}")
     
-    # Get raw company data
-    company_data = get_company_data(org_number)
+    # Get raw company data - run blocking call in thread pool
+    import asyncio
+    try:
+        company_data = await asyncio.to_thread(get_company_data, org_number)
+    except Exception as e:
+        logger.error(f"Error getting company data in thread: {str(e)}")
+        company_data = None
     
     if company_data:
-        # Clean and analyze the data
+        # Clean and analyze the data (this is CPU-bound, but fast, so can run in thread if needed)
         cleaned_data = parse_company(company_data)
         if cleaned_data:
             print(f"      ✅ Successfully retrieved and cleaned company data")

@@ -140,10 +140,17 @@ class ContactInfoScraper:
         
         driver = None
         try:
-            driver = webdriver.Chrome(
-                service=Service(ChromeDriverManager().install()), 
-                options=options
-            )
+            # Get ChromeDriver path with better error handling
+            try:
+                driver_path = ChromeDriverManager().install()
+            except Exception as e:
+                logger.error(f"Failed to install/get ChromeDriver: {e}")
+                print(f"          ChromeDriver installation failed: {str(e)}")
+                return {'emails': [], 'phones': [], 'addresses': []}
+            
+            # Create service with explicit path
+            service = Service(driver_path)
+            driver = webdriver.Chrome(service=service, options=options)
             driver.set_page_load_timeout(20)
             driver.get(url)
             time.sleep(3)
@@ -185,13 +192,13 @@ class ContactInfoScraper:
                     all_text += ' ' + href
 
         return {
-            'emails': self.extract_emails(all_text, source_url),
+            'emails': self.extract_emails(all_text, source_url, soup),  # Pass soup for role detection
             'phones': self.extract_phones(all_text, source_url),
             'addresses': self.extract_addresses(soup, source_url)
         }
         
-    def extract_emails(self, text, source_url):
-        """Enhanced email extraction with exact source URL"""
+    def extract_emails(self, text, source_url, soup=None):
+        """Enhanced email extraction with exact source URL and role detection"""
         # Multiple email patterns
         patterns = [
             r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b',
@@ -221,6 +228,7 @@ class ContactInfoScraper:
                 email_parts = email.split('@')[0].split('.')
                 firstname = None
                 lastname = None
+                role = None
                 
                 # List of generic email prefixes that are not personal names
                 generic_prefixes = [
@@ -242,40 +250,74 @@ class ContactInfoScraper:
                         # If only one part, use it as firstname
                         firstname = email_parts[0].capitalize()
                 
+                # Try to detect role/title if soup is provided
+                if soup:
+                    role = self.detect_role_near_email(soup, email)
+                
                 valid_emails.append({
                     'email': email,
                     'source': source_url,
                     'firstname': firstname,
-                    'lastname': lastname 
+                    'lastname': lastname,
+                    'role': role  # Added role field
                 })
         
         return valid_emails
     
-    def extract_phones(self, text, source_url):
-        patterns = [
-            # International formats
-            r'\+\d{1,4}[\s\-]?\d{1,4}[\s\-]?\d{1,4}[\s\-]?\d{1,4}[\s\-]?\d{1,4}',
-            r'\+\d{1,4}(?:\s?\(0\))?(?:[\s\-]?\d{1,4}){2,5}',
-            # Swedish formats
-            r'0(?:[\s\-]?\d){8,16}',
-        ]
+    def detect_role_near_email(self, soup, email):
+        """Detect job title/role near an email address in the HTML"""
+        # Common executive and leadership roles
+        role_keywords = {
+            'ceo': ['ceo', 'chief executive officer', 'vd', 'verkställande direktör'],
+            'cto': ['cto', 'chief technology officer', 'tekniskt ansvarig', 'teknisk chef'],
+            'cfo': ['cfo', 'chief financial officer', 'ekonomidirektör', 'finansiell chef'],
+            'coo': ['coo', 'chief operating officer', 'operativ chef'],
+            'cmo': ['cmo', 'chief marketing officer', 'marknadschef'],
+            'founder': ['founder', 'grundare', 'co-founder', 'medgrundare'],
+            'director': ['director', 'direktör', 'managing director', 'verkställande direktör'],
+            'manager': ['manager', 'chef', 'vd', 'ledare'],
+            'head': ['head of', 'chef för', 'ansvarig för'],
+            'lead': ['lead', 'ledare', 'senior lead']
+        }
         
-        phones = []
-        for pattern in patterns:
-            matches = re.findall(pattern, text)
-            phones.extend(matches)
-
-        valid_phones = []
-        for phone in set(phones):
-            digits_only = re.sub(r'[^\d]', '', phone)
-            if len(digits_only) >= 7: 
-                print(f"          Found phone: {phone.strip()} from {source_url}")
-                valid_phones.append({
-                    'phone': phone.strip(),
-                    'source': source_url 
-                })
+        # Find elements containing the email
+        email_lower = email.lower()
+        elements_with_email = []
         
-        return valid_emails
+        # Search in various HTML elements
+        for element in soup.find_all(['p', 'div', 'li', 'td', 'span', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+            text = element.get_text(separator=' ', strip=True).lower()
+            if email_lower in text:
+                elements_with_email.append(element)
+        
+        # Search for role keywords near the email
+        for element in elements_with_email[:5]:  # Limit search to avoid false positives
+            text = element.get_text(separator=' ', strip=True).lower()
+            
+            # Check each role category
+            for role_name, keywords in role_keywords.items():
+                for keyword in keywords:
+                    # Check if keyword appears near the email (within 50 characters)
+                    email_pos = text.find(email_lower)
+                    if email_pos != -1:
+                        # Search in a window around the email
+                        start = max(0, email_pos - 100)
+                        end = min(len(text), email_pos + 100)
+                        context = text[start:end]
+                        
+                        if keyword.lower() in context:
+                            return role_name.upper()
+            
+            # Also check parent and sibling elements for role information
+            parent = element.find_parent()
+            if parent:
+                parent_text = parent.get_text(separator=' ', strip=True).lower()
+                for role_name, keywords in role_keywords.items():
+                    for keyword in keywords:
+                        if keyword.lower() in parent_text:
+                            return role_name.upper()
+        
+        return None
     
     def extract_phones(self, text, source_url):
         patterns = [

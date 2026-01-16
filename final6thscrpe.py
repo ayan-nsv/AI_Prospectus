@@ -10,31 +10,60 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import undetected_chromedriver as uc
-from selenium.common.exceptions import WebDriverException
+from selenium.common.exceptions import WebDriverException, TimeoutException
 import time
 import urllib3
 from typing import Dict, Optional, Tuple
 from urllib.parse import urlparse, quote
 import logging
+import os
+import signal
+import subprocess
+import threading
 from enhanced_contact_scraper import ContactInfoScraper
 
 from get_company_openai import clean_phone_numbers, get_correct_url
+
+# Semaphore to limit concurrent Selenium instances (max 3 at a time)
+_selenium_semaphore = threading.Semaphore(3)
+
+# Cache ChromeDriver path to avoid repeated installations
+_chromedriver_path = None
+_chromedriver_lock = threading.Lock()
+
+def _get_chromedriver_path():
+    """Get ChromeDriver path, caching it to avoid repeated installations"""
+    global _chromedriver_path
+    if _chromedriver_path:
+        return _chromedriver_path
+    
+    with _chromedriver_lock:
+        # Double-check after acquiring lock
+        if _chromedriver_path:
+            return _chromedriver_path
+        
+        try:
+            _chromedriver_path = ChromeDriverManager().install()
+            return _chromedriver_path
+        except Exception as e:
+            logger.error(f"Failed to install ChromeDriver: {e}")
+            return None
 
 # Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger = logging.getLogger(__name__)
 
-def find_company_website(company_name):
+def find_company_website(company_name, region, country):
     """
     Find the official website for a company name using multiple search engines
     """
     print(f"🔍 Searching for website: {company_name}")
     
     search_engines = [
-        ("Google", f"https://www.google.com/search?q={quote(f'{company_name} official website')}"),
-        ("Bing", f"https://www.bing.com/search?q={quote(f'{company_name} official website')}"),
-        ("DuckDuckGo", f"https://duckduckgo.com/?q={quote(f'{company_name} official website')}")
+        ("Google", f"https://www.google.com/search?q={quote(f'{company_name}, {region}, {country} official website')}"),
+        ("Bing", f"https://www.bing.com/search?q={quote(f'{company_name}, {region}, {country} official website')}"),
+        ("DuckDuckGo", f"https://duckduckgo.com/?q={quote(f'{company_name}, {region}, {country} official website')}")
     ]
     
     for x in range(3):
@@ -52,22 +81,80 @@ def find_company_website(company_name):
     print(f"  ❌ No website found for {company_name}")
     return None
 
-def search_website_with_selenium(search_url, engine_name):
-    """Search for website using Selenium"""
-    options = Options()
-    options.add_argument('--headless=new')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--disable-blink-features=AutomationControlled')
-    options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+def _force_cleanup_driver(driver):
+    """Force cleanup of ChromeDriver process"""
+    if not driver:
+        return
     
-    driver = None
     try:
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-        driver.set_page_load_timeout(30)
-        driver.get(search_url)
-        time.sleep(3)
+        # Try normal quit first
+        driver.quit()
+    except:
+        pass
+    
+    try:
+        # Force kill ChromeDriver process if it's still running
+        if hasattr(driver, 'service') and driver.service and driver.service.process:
+            try:
+                driver.service.process.terminate()
+                driver.service.process.wait(timeout=5)
+            except:
+                try:
+                    driver.service.process.kill()
+                except:
+                    pass
+    except:
+        pass
+
+
+def search_website_with_selenium(search_url, engine_name):
+    """Search for website using Selenium with proper cleanup"""
+    # Acquire semaphore to limit concurrent instances
+    _selenium_semaphore.acquire()
+    driver = None
+    
+    try:
+        # Get cached ChromeDriver path
+        chromedriver_path = _get_chromedriver_path()
+        if not chromedriver_path:
+            print(f"    ⚠️ ChromeDriver not available, skipping {engine_name}")
+            return None
         
+        options = Options()
+        options.add_argument('--headless=new')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-blink-features=AutomationControlled')
+        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+        options.add_argument('--disable-gpu')
+        options.add_argument('--remote-debugging-port=0')  # Use random port
+        
+        # Retry logic for driver initialization
+        max_retries = 2
+        for attempt in range(max_retries):
+            try:
+                driver = webdriver.Chrome(service=Service(chromedriver_path), options=options)
+                driver.set_page_load_timeout(20)  # Reduced timeout
+                driver.implicitly_wait(5)
+                break
+            except Exception as e:
+                if attempt < max_retries - 1:
+                    print(f"    ⚠️ ChromeDriver init attempt {attempt + 1} failed, retrying...")
+                    time.sleep(1)
+                    # Reset cached path to force reinstall on next call
+                    global _chromedriver_path
+                    _chromedriver_path = None
+                    chromedriver_path = _get_chromedriver_path()
+                    if not chromedriver_path:
+                        return None
+                else:
+                    raise
+        
+        if not driver:
+            return None
+        
+        driver.get(search_url)
+        time.sleep(2)  # Reduced sleep time
 
         if engine_name == "Google":
             selectors = [
@@ -96,14 +183,14 @@ def search_website_with_selenium(search_url, engine_name):
             except Exception as e:
                 continue
                 
+    except TimeoutException:
+        print(f"    ⏱️ Timeout with {engine_name}")
     except Exception as e:
-        print(f"    Error with {engine_name}: {str(e)}")
+        print(f"    Error with {engine_name}: {str(e)[:100]}")
     finally:
-        if driver:
-            try:
-                driver.quit()
-            except:
-                pass
+        # Always cleanup driver
+        _force_cleanup_driver(driver)
+        _selenium_semaphore.release()
     
     return None
 
@@ -429,32 +516,69 @@ def get_html(url):
     except Exception as e:
         print(f"        ❌ Requests failed: {str(e)}")
 
-    # Try Selenium
+    # Try Selenium with proper cleanup
+    driver = None
+    _selenium_semaphore.acquire()  # Limit concurrent Selenium instances
+    
     try:
         print(f"        🔄 Trying Selenium method...")
+        
+        # Get cached ChromeDriver path
+        chromedriver_path = _get_chromedriver_path()
+        if not chromedriver_path:
+            print(f"        ⚠️ ChromeDriver not available, skipping Selenium")
+            return None, None
+        
         options = Options()
         options.add_argument('--headless=new')
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('--disable-blink-features=AutomationControlled')
         options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+        options.add_argument('--disable-gpu')
+        options.add_argument('--remote-debugging-port=0')  # Use random port
 
-        driver = webdriver.Chrome(options=options)
-        driver.set_page_load_timeout(30)
+        # Retry logic for driver initialization
+        max_retries = 2
+        for attempt in range(max_retries):
+            try:
+                driver = webdriver.Chrome(service=Service(chromedriver_path), options=options)
+                driver.set_page_load_timeout(20)  # Reduced timeout
+                driver.implicitly_wait(5)
+                break
+            except Exception as e:
+                if attempt < max_retries - 1:
+                    print(f"        ⚠️ ChromeDriver init attempt {attempt + 1} failed, retrying...")
+                    time.sleep(1)
+                    # Reset cached path to force reinstall on next call
+                    global _chromedriver_path
+                    _chromedriver_path = None
+                    chromedriver_path = _get_chromedriver_path()
+                    if not chromedriver_path:
+                        return None, None
+                else:
+                    raise
+        
+        if not driver:
+            return None, None
+        
         driver.get(url)
-        time.sleep(5)
+        time.sleep(3)  # Reduced sleep time
         html = driver.page_source
-        driver.quit()
         
         if html and len(html) > 500:
             print(f"        ✅ Selenium method successful")
             return html, "selenium"
         else:
             print(f"        ❌ Selenium returned empty content")
+    except TimeoutException:
+        print(f"        ⏱️ Selenium timeout")
     except Exception as e:
-        print(f"        ❌ Selenium failed: {str(e)}")
-        if 'driver' in locals():
-            driver.quit()
+        print(f"        ❌ Selenium failed: {str(e)[:100]}")
+    finally:
+        # Always cleanup driver
+        _force_cleanup_driver(driver)
+        _selenium_semaphore.release()
 
     print(f"        ❌ All methods failed")
     return None, None
@@ -874,7 +998,7 @@ def print_content(content):
 
 
 
-def scrape_company_by_name(company_name: str) -> Optional[Dict]:
+def scrape_company_by_name(company_name: str, region: str, country: str) -> Optional[Dict]:
     """
     Main function to scrape company data by company name.
 
@@ -890,7 +1014,7 @@ def scrape_company_by_name(company_name: str) -> Optional[Dict]:
     print(f"{'='*60}")
 
     # Step 1: Find the company website (search engine scraped URL)
-    scraped_url = find_company_website(company_name)
+    scraped_url = find_company_website(company_name, region, country)
     if not scraped_url:
         print(f"❌ Could not find website for {company_name}")
         return None

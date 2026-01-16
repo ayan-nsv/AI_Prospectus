@@ -376,3 +376,55 @@ def get_correct_url(allabolag_name: str, scraped_url):
         logger.error(f"Error validating URL for {allabolag_name}: {e}")
         return {"url": scraped_url}
 
+
+
+def check_if_category_contains_contact_details(category: str, emails: List[str]):
+    # Note: Ensure 'json' and 'get_openai_client' are available in your scope
+    
+    system_message = (
+        "You are a business analyst. You will be provided with a category/query and a list of emails. "
+        "Task: Determine if the category specifies a need for specific contact details (e.g., 'CEOs in Stockholm').\n\n"
+        "1. If specific details are requested AND available, return the filtered list of objects.\n"
+        "2. If the category is general or doesn't filter the list, return all provided emails in the specified format.\n"
+        "3. Output MUST be a JSON object containing a key 'contacts' with a list of objects."
+    )
+
+    # We pass the actual 'emails' list into the prompt so the AI can process them
+    prompt = f"""
+    Category: {category}
+    Email List: {json.dumps(emails)}
+
+    Return the data strictly in this JSON format:
+    {{
+        "emails": [
+            {{
+                "email": "string",
+                "source": "string",
+                "firstname": "string",
+                "lastname": "string",
+                "role": "string"
+            }}
+        ]
+    }}
+    """
+
+    client = get_openai_client()
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": system_message},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=1000, # Increased to handle list size
+            temperature=0,    # Lower temperature is better for data extraction
+            response_format={"type": "json_object"}
+        )
+        
+        content = response.choices[0].message.content.strip()
+        return json.loads(content).get("emails", [])
+        
+    except Exception as e:
+        print(f"Error processing emails: {e}")
+        return []

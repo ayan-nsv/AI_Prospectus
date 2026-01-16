@@ -28,7 +28,6 @@ def get_openai_client():
     if _openai_client is None:
         _openai_client = OpenAI(
             api_key=os.getenv("OPENAI_API_KEY"),
-            timeout=30.0,
             max_retries=3
         )
     return _openai_client
@@ -39,7 +38,6 @@ def get_async_openai_client():
     if _async_openai_client is None:
         _async_openai_client = AsyncOpenAI(
             api_key=os.getenv("OPENAI_API_KEY"),
-            timeout=30.0,
             max_retries=3
         )
     return _async_openai_client
@@ -328,8 +326,7 @@ class CompanyMatcher:
                 ],
                 response_format={"type": "json_object"},
                 temperature=0.1,
-                max_tokens=500,
-                timeout=self.config.timeout_seconds
+                max_tokens=500
             )
             
             content = response.choices[0].message.content.strip()
@@ -462,8 +459,7 @@ class CompanyMatcher:
                     ],
                     response_format={"type": "json_object"},
                     temperature=0.1,
-                    max_tokens=500,
-                    timeout=self.config.timeout_seconds
+                    max_tokens=500
                 )
                 
                 content = response.choices[0].message.content.strip()
@@ -895,55 +891,65 @@ Evaluate and return JSON with the required fields."""
 
 
     
-    async def process_batch(self, org_numbers: List[str], criteria: str, 
-                           get_company_data_func, clean_company_info_func, batch_size: int = 5) -> List[Dict]:
+    async def process_batch_with_criteria(self, org_numbers: List[str], criteria: str, 
+                           get_company_data_func, clean_company_info_func, batch_size: int = 5,
+                           timeout_per_company: float = 120.0) -> List[Dict]:
         """
-        Process a batch of companies efficiently
+        Process a batch of companies efficiently with parallel processing
+        
+        Args:
+            org_numbers: List of organization numbers to process
+            criteria: Criteria string for evaluation
+            get_company_data_func: Function to get company data
+            clean_company_info_func: Function to clean company info
+            batch_size: Number of companies to process concurrently
+            timeout_per_company: Maximum time to wait for each company (seconds)
         """
         all_results = []
         total_companies = len(org_numbers)
         
         logger.info(f"Starting batch processing of {total_companies} companies")
         
+        # Extract criteria info once per batch (cached, but still more efficient)
+        cache_key = hashlib.md5(criteria.encode()).hexdigest()
+        criteria_info = self._cached_criteria_extraction(cache_key, criteria)
+        logger.info(f"Extracted criteria info once for batch: {criteria_info.summary}")
+        
         # Process in batches
         for i in range(0, total_companies, batch_size):
             batch_orgs = org_numbers[i:i + batch_size]
-            batch_results = []
             
             logger.info(f"Processing batch {i//batch_size + 1}: companies {i+1}-{min(i+batch_size, total_companies)}")
             
-            # Get company data for this batch
-            company_data_tasks = []
-            for org_number in batch_orgs:
-                task = asyncio.create_task(get_company_data_func(org_number))
-                company_data_tasks.append((org_number, task))
-            
-            # Process each company in batch
-            for org_number, task in company_data_tasks:
+            # Process all companies in batch concurrently
+            async def process_single_company(org_number: str) -> Dict:
+                """Process a single company with error handling and timeout protection"""
                 try:
-                    # Get company data with timeout
-                    company_data = await asyncio.wait_for(task, timeout=30.0)
-                    
-                    if company_data:
-                        # Check match
-                        filtered_data = await clean_company_info_func(org_number)
-
-                        match_result = await self.async_check_match(criteria, filtered_data)
-                        
-                        result = {
+                    # Get company data with timeout protection
+                    # Pass criteria for contact prioritization
+                    try:
+                        company_data = await asyncio.wait_for(
+                            get_company_data_func(org_number, criteria),
+                            timeout=timeout_per_company
+                        )
+                    except asyncio.TimeoutError:
+                        logger.error(f"Timeout getting company data for {org_number} after {timeout_per_company}s")
+                        return {
                             "org_number": org_number,
-                            "is_match": match_result.match_score >= 80,
-                            "match_score": match_result.match_score,
-                            "reason": match_result.reason,
-                            "confidence": match_result.confidence,
-                            "matched_keywords": match_result.matched_keywords,
-                            "unmatched_keywords": match_result.unmatched_keywords,
-                            "processing_time": match_result.processing_time,
-                            "status": "success",
-                            "company_profile": company_data
+                            "is_match": False,
+                            "match_score": 0,
+                            "reason": f"Timeout retrieving company data after {timeout_per_company}s",
+                            "confidence": 0.0,
+                            "matched_keywords": [],
+                            "unmatched_keywords": [],
+                            "processing_time": 0.0,
+                            "status": "failed",
+                            "error": f"Timeout after {timeout_per_company} seconds",
+                            "company_profile": None
                         }
-                    else:
-                        result = {
+                    
+                    if not company_data:
+                        return {
                             "org_number": org_number,
                             "is_match": False,
                             "match_score": 0,
@@ -957,26 +963,82 @@ Evaluate and return JSON with the required fields."""
                             "company_profile": None
                         }
                     
-                    batch_results.append(result)
+                    # Get cleaned company info for matching with timeout protection
+                    try:
+                        filtered_data = await asyncio.wait_for(
+                            clean_company_info_func(org_number),
+                            timeout=timeout_per_company
+                        )
+                    except asyncio.TimeoutError:
+                        logger.error(f"Timeout getting cleaned company info for {org_number} after {timeout_per_company}s")
+                        return {
+                            "org_number": org_number,
+                            "is_match": False,
+                            "match_score": 0,
+                            "reason": f"Timeout retrieving cleaned company data after {timeout_per_company}s",
+                            "confidence": 0.0,
+                            "matched_keywords": [],
+                            "unmatched_keywords": [],
+                            "processing_time": 0.0,
+                            "status": "failed",
+                            "error": f"Timeout after {timeout_per_company} seconds",
+                            "company_profile": company_data
+                        }
                     
-                except asyncio.TimeoutError:
-                    logger.error(f"Timeout getting data for {org_number}")
-                    batch_results.append({
+                    if not filtered_data:
+                        return {
+                            "org_number": org_number,
+                            "is_match": False,
+                            "match_score": 0,
+                            "reason": "Failed to retrieve cleaned company data",
+                            "confidence": 0.0,
+                            "matched_keywords": [],
+                            "unmatched_keywords": [],
+                            "processing_time": 0.0,
+                            "status": "failed",
+                            "error": "Cleaned company data not found",
+                            "company_profile": company_data
+                        }
+                    
+                    # Evaluate match using pre-extracted criteria info with timeout
+                    # This avoids re-extracting criteria for each company
+                    try:
+                        match_result = await asyncio.wait_for(
+                            self._async_evaluate_match_with_criteria_info(criteria_info, filtered_data),
+                            timeout=60.0  # 60 seconds max for LLM evaluation
+                        )
+                    except asyncio.TimeoutError:
+                        logger.error(f"Timeout evaluating match for {org_number} after 60s")
+                        return {
+                            "org_number": org_number,
+                            "is_match": False,
+                            "match_score": 0,
+                            "reason": "Timeout evaluating match criteria",
+                            "confidence": 0.0,
+                            "matched_keywords": [],
+                            "unmatched_keywords": [],
+                            "processing_time": 0.0,
+                            "status": "failed",
+                            "error": "Match evaluation timeout",
+                            "company_profile": company_data
+                        }
+                    
+                    return {
                         "org_number": org_number,
-                        "is_match": False,
-                        "match_score": 0,
-                        "reason": "Timeout retrieving company data",
-                        "confidence": 0.0,
-                        "matched_keywords": [],
-                        "unmatched_keywords": [],
-                        "processing_time": 0.0,
-                        "status": "failed",
-                        "error": "Timeout",
-                        "company_profile": None
-                    })
+                        "is_match": match_result.match_score >= 80,
+                        "match_score": match_result.match_score,
+                        "reason": match_result.reason,
+                        "confidence": match_result.confidence,
+                        "matched_keywords": match_result.matched_keywords,
+                        "unmatched_keywords": match_result.unmatched_keywords,
+                        "processing_time": match_result.processing_time,
+                        "status": "success",
+                        "company_profile": company_data
+                    }
+                    
                 except Exception as e:
-                    logger.error(f"Error processing {org_number}: {e}")
-                    batch_results.append({
+                    logger.error(f"Error processing {org_number}: {e}", exc_info=True)
+                    return {
                         "org_number": org_number,
                         "is_match": False,
                         "match_score": 0,
@@ -988,7 +1050,30 @@ Evaluate and return JSON with the required fields."""
                         "status": "failed",
                         "error": str(e),
                         "company_profile": None
-                    })
+                    }
+            
+            # Process all companies in batch concurrently with error handling
+            batch_tasks = [process_single_company(org_number) for org_number in batch_orgs]
+            batch_results = await asyncio.gather(*batch_tasks, return_exceptions=True)
+            
+            # Handle any exceptions that weren't caught
+            for idx, result in enumerate(batch_results):
+                if isinstance(result, Exception):
+                    org_number = batch_orgs[idx]
+                    logger.error(f"Unexpected exception processing {org_number}: {result}", exc_info=True)
+                    batch_results[idx] = {
+                        "org_number": org_number,
+                        "is_match": False,
+                        "match_score": 0,
+                        "reason": f"Unexpected error: {str(result)}",
+                        "confidence": 0.0,
+                        "matched_keywords": [],
+                        "unmatched_keywords": [],
+                        "processing_time": 0.0,
+                        "status": "failed",
+                        "error": str(result),
+                        "company_profile": None
+                    }
             
             all_results.extend(batch_results)
             
@@ -998,5 +1083,27 @@ Evaluate and return JSON with the required fields."""
         
         logger.info(f"Batch processing completed: {len(all_results)} results")
         return all_results
+    
+    async def _async_evaluate_match_with_criteria_info(self, criteria_info: CriteriaInfo, 
+                                                      company_data: Dict) -> MatchResult:
+        """Async evaluation using pre-extracted criteria info (avoids redundant LLM call)"""
+        start_time = datetime.now()
+        
+        try:
+            result = await self._async_evaluate_match(criteria_info, company_data)
+            processing_time = (datetime.now() - start_time).total_seconds()
+            result.processing_time = processing_time
+            return result
+        except Exception as e:
+            logger.error(f"Match evaluation failed: {e}", exc_info=True)
+            processing_time = (datetime.now() - start_time).total_seconds()
+            return MatchResult(
+                match_score=0,
+                reason=f"Evaluation failed: {str(e)}",
+                confidence=0.0,
+                matched_keywords=[],
+                unmatched_keywords=[],
+                processing_time=processing_time
+            )
     
     
